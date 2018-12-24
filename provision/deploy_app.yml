@@ -1,0 +1,71 @@
+---
+- hosts: apiservers
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  gather_facts: no
+  vars:
+   docker_host_port: 8080
+  pre_tasks:
+   - name: Install python
+     raw: sudo apt-get -y install python 
+
+   - name: Install packages
+     apt:
+      name: "{{ packages }}"
+      update_cache: yes
+     vars:
+      packages:
+      - python-pip
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+   - name: Add Docker GPG key
+     shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+   - name: Get Linux Release
+     shell: lsb_release -cs
+     register: linux_release
+
+   - debug: var=linux_release.stdout
+
+
+   - name: Add Docker repository
+     apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ linux_release.stdout }} stable
+      state: present
+
+   - name: Install Docker
+     apt:
+      name: docker-ce
+      update_cache: yes
+
+   - name: Install Docker python module
+     pip:
+      name: docker
+
+   - name: Copy app folder to remote machine
+     copy:
+      src: ../../chatter_app
+      dest: /home/ubuntu
+      owner: ubuntu
+      group: ubuntu
+      mode: '777'
+   
+   - name: Build Docker image from Dockerfile
+     docker_image:
+      path: /home/ubuntu/chatter_app
+      name: chatterbox
+      tag: v1
+      
+   - name: Run container from image
+     docker_container:
+      name: chatterbox_container
+      image: chatterbox:v1
+      ports: {{ docker_host_port }}:80
+      detach: yes
+      state: started
+    
+    

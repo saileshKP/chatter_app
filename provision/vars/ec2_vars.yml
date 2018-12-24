@@ -1,0 +1,7 @@
+---
+keypair: my_keypair
+instance_type: instance_type
+security_group: my_securitygroup
+image: my_ami_id
+region: aws_region
+subnet_id: subnet-id

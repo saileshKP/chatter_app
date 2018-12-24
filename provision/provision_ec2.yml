@@ -1,0 +1,21 @@
+- name: Provision compute instance
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - vars/ec2_vars.yml
+  tasks:
+    - name: Launch instance
+      ec2:
+         key_name: "{{ keypair }}"
+         group: "{{ security_group }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         wait: yes
+         region: "{{ region }}"
+         termination_protection: yes
+         vpc_subnet_id: "{{ subnet_id }}"
+         assign_public_ip: yes
+      register: ec2
+
+    - name: Echo provisioned ec2 details
+      debug: var=ec2
