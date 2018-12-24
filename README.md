@@ -33,3 +33,6 @@ aws_secret_access_key = <your_secret_key_here>
 3. Switch to the provision/ folder and execute the deploy_app.yml with the ec2 private key file for the keypair used while provisioning the instance.
 ```ansible-playbook --private-key=</path/to/ec2_ppk_file>```
 
+## Sequence Diagram
+
+![image](https://drive.google.com/uc?export=view&id=1ci-Wq3uUjZdrcH5vEhSxI8NVRfo_raaY)
