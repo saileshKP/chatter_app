@@ -36,3 +36,7 @@ aws_secret_access_key = <your_secret_key_here>
 ## Sequence Diagram
 
 ![image](https://drive.google.com/uc?export=view&id=1ci-Wq3uUjZdrcH5vEhSxI8NVRfo_raaY)
+
+## API Documentation
+
+[ Document Link ](https://documenter.getpostman.com/view/6237987/Rzn9rg1s)
